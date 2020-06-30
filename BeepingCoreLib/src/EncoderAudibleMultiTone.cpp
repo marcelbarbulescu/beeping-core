@@ -20,7 +20,7 @@
 
 using namespace BEEPING;
 
-EncoderAudibleMultiTone::EncoderAudibleMultiTone(float samplingRate, int buffsize, int windowSize) : Encoder(samplingRate, buffsize, windowSize, Globals::numTokensAudible, Globals::numTonesAudibleMultiTone)
+EncoderAudibleMultiTone::EncoderAudibleMultiTone(float samplingRate, int windowSize) : Encoder(samplingRate, windowSize, Globals::numTokensAudible, Globals::numTonesAudibleMultiTone)
 {
 //__android_log_print(ANDROID_LOG_INFO, "BeepingCoreLibInfo", "EncoderAudibleMultiTone init" );
   mCurrentFreqs = new float[2];
@@ -368,15 +368,3 @@ int EncoderAudibleMultiTone::EncodeDataToAudioBuffer(const char *stringToEncode,
 
   return mNumSamplesEncodedString;
 }
-
-
-int EncoderAudibleMultiTone::GetEncodedAudioBuffer(float *audioBuffer)
-{
-  return Encoder::GetEncodedAudioBuffer(audioBuffer);
-}
-
-int EncoderAudibleMultiTone::ResetEncodedAudioBuffer()
-{
-  return Encoder::ResetEncodedAudioBuffer();
-}
-

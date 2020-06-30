@@ -16,7 +16,7 @@
 
 using namespace BEEPING;
 
-EncoderAudible::EncoderAudible(float samplingRate, int buffsize, int windowSize) : Encoder(samplingRate, buffsize, windowSize, Globals::numTokensAudible, Globals::numTokensAudible)
+EncoderAudible::EncoderAudible(float samplingRate, int windowSize) : Encoder(samplingRate, windowSize, Globals::numTokensAudible, Globals::numTokensAudible)
 {
 //__android_log_print(ANDROID_LOG_INFO, "BeepingCoreLibInfo", "EncoderAudible init" );
 }
@@ -184,15 +184,3 @@ int EncoderAudible::EncodeDataToAudioBuffer(const char *stringToEncode, int type
 
   return mNumSamplesEncodedString;
 }
-
-
-int EncoderAudible::GetEncodedAudioBuffer(float *audioBuffer)
-{
-  return Encoder::GetEncodedAudioBuffer(audioBuffer);
-}
-
-int EncoderAudible::ResetEncodedAudioBuffer()
-{
-  return Encoder::ResetEncodedAudioBuffer();
-}
-

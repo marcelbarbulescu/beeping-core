@@ -23,7 +23,7 @@
 
 using namespace BEEPING;
 
-DecoderNonAudibleMultiTone::DecoderNonAudibleMultiTone(float samplingRate, int buffSize, int windowSize) : Decoder(samplingRate, buffSize, windowSize, Globals::numTokensNonAudible, Globals::numTonesNonAudibleMultiTone)
+DecoderNonAudibleMultiTone::DecoderNonAudibleMultiTone(float samplingRate, int windowSize) : Decoder(samplingRate, windowSize, Globals::numTokensNonAudible, Globals::numTonesNonAudibleMultiTone)
 {
 #ifdef _IOS_LOG_
   ios_log("C++ DecoderNonAudibleMultiTone");
@@ -96,14 +96,10 @@ int DecoderNonAudibleMultiTone::DecodeAudioBuffer(float *audioBuffer, int size)
   }
   mWritePosInFrameCircularBuffer = (size+mWritePosInFrameCircularBuffer)%(mSizeFrameCircularBuffer);
   
-  //if enough data filled (mBufferSize), then send to decode library
-  
   while (getSizeFilledFrameCircularBuffer() >= sizeWindow)
   {  	//copy from circularBufferFloat to sendBuffer
   	for (i=0;i<sizeWindow;i++)
   		mAnalBufferFloat[i] = mCircularBufferFloat[(i+mReadPosInFrameCircularBuffer)%(mSizeFrameCircularBuffer)];
-    //advance readpos (advance hopsize instead of full buffersize)
-  	//mReadPosInFrameCircularBuffer = (mReadPosInFrameCircularBuffer+mBufferSize)%(mSizeFrameCircularBuffer);
     mReadPosInFrameCircularBuffer = (mReadPosInFrameCircularBuffer+mSpectralAnalysis->mHopSize)%(mSizeFrameCircularBuffer);
 
     if (mDecoding == 0)

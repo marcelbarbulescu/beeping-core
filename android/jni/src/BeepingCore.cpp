@@ -138,9 +138,7 @@ JNIEXPORT jint JNICALL Java_com_beeping_AndroidBeepingCore_BeepingCoreJNI_config
   //sleep(1); //in seconds
   usleep(500000); //in microseconds 500000 = 0.5 seconds
   jfloat samplingRate = 44100.f;
-  //jint bufferSize = 512;
-  jint bufferSize = 64; //same value as #define VECSAMPS_MONO 64 in AndroidBepingOpenSL.c
-  int ret = BEEPING_Configure(mode, samplingRate,bufferSize,(void*)beepingObject);
+  int ret = BEEPING_Configure(mode, samplingRate, (void *)beepingObject);
   
 /*  jclass javaClassRef = env->FindClass("com/beeping/AndroidBeepingCore/BeepingCoreJNI");
   

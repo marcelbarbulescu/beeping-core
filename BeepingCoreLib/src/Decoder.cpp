@@ -18,7 +18,7 @@
 
 using namespace BEEPING;
 
-Decoder::Decoder(float samplingRate, int buffSize, int windowSize, int numTokens, int numTones)
+Decoder::Decoder(float samplingRate, int windowSize, int numTokens, int numTones)
 {
   mNumTokens = numTokens;
   mNumTones = numTones;
@@ -28,7 +28,6 @@ Decoder::Decoder(float samplingRate, int buffSize, int windowSize, int numTokens
   mDecodedString[0] = '\0';
 
   mSampleRate = samplingRate;
-  mBufferSize = buffSize;
   mWindowSize = windowSize;
   	
   //decide hopsize and windowSize depending on sampleRate

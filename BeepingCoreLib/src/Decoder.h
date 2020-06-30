@@ -24,7 +24,7 @@ namespace BEEPING
   class Decoder
   {
   public:
-    Decoder(float sr, int buffsize, int windowSize, int numTokens, int numTones);
+    Decoder(float sr, int windowSize, int numTokens, int numTones);
     ~Decoder(void);
 
     virtual int DecodeAudioBuffer(float *audioBuffer, int size);
@@ -59,7 +59,6 @@ namespace BEEPING
     virtual float ComputeBlockMagSpecSumsLastToken(int midFreqBin, int width, int nbins, std::vector<float> &sumPerFrame);
 
     float mSampleRate;
-    int mBufferSize;
 
     int mDecoding;
     //For multiple decoding mode (will be set after first token found and guessed decoding mode)

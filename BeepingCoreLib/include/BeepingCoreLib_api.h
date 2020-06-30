@@ -64,12 +64,11 @@ extern "C" {
 
   //BEEPING_Configure function, call this function to configure parameters of the BeepingCore Library
   //* Parameters:
-  //    mode: mode (2 for audible, 3 for non-audible, don’t use other modes, 0 and 1 are old modes)
+  //    mode: mode (2 for audible, 3 for non-audible, don't use other modes, 0 and 1 are old modes)
   //    samplingRate: sampling rate in Hz
-  //    nChannels: number of channels of the input audio
   //    beepingObject: BEEPING object instance, created in BEEPING_Create()
   //* Returns: 0=ok, <0=fail
-  BEEPING_DLLEXPORT int32_t BEEPING_Configure(int mode, float samplingRate, int32_t bufferSize, void *beepingObject);
+  BEEPING_DLLEXPORT int32_t BEEPING_Configure(int mode, float samplingRate, void *beepingObject);
  
   //BEEPING_SetAudioSignature function, call this function to set a personalized audio beep that will be played 
   // simultaneously during beeping playback on top of non-audible, audible or hidden beeps
@@ -94,10 +93,11 @@ extern "C" {
 
   //BEEPING_GetEncodedAudioBuffer function
   //* Parameters:
-  //    audioBuffer: float array of bufferSize size to fill with encoded audio data
+  //    audioBuffer: float array of size to fill with encoded audio data
+  //    size: size of audioBuffer
   //    beepingObject: BEEPING object instance, created in BEEPING_Create()  
-  //* Returns: number of samples read, maximum will be configured bufferSize, 0 or < bufferSize means that end has been reached
-  BEEPING_DLLEXPORT int32_t BEEPING_GetEncodedAudioBuffer(float *audioBuffer, void *beepingObject);
+  //* Returns: number of samples read, maximum will be size, 0 or < size means that end has been reached
+  BEEPING_DLLEXPORT int32_t BEEPING_GetEncodedAudioBuffer(float *audioBuffer, int size, void *beepingObject);
 
   //BEEPING_CreateAudioBufferFromData function, resets the read index on the internal buffer that has the encoded string
   //* Parameters:
@@ -108,7 +108,7 @@ extern "C" {
 
   //BEEPING_DecodeAudioBuffer function, receives an audiobuffer of specified size and outputs if encoded data is found
   //* Parameters:
-  //    audioBuffer: float array of bufferSize size with audio data to be decoded
+  //    audioBuffer: float array of size with audio data to be decoded
   //    size: size of audioBuffer
   //    beepingObject: BEEPING object instance, created in BEEPING_Create()  
   //* Returns: -1 if no decoded data is found, -2 if start token is found, -3 if complete word has been decoded, positive number if character is decoded (number is the token idx)

@@ -9,15 +9,13 @@ namespace BEEPING
   class EncoderAudibleMultiTone : public Encoder
   {
   public:
-    EncoderAudibleMultiTone(float samplingRate, int buffsize, int windowSize);
+    EncoderAudibleMultiTone(float samplingRate, int windowSize);
     ~EncoderAudibleMultiTone(void);
 
     float* mCurrentFreqs;
     float* mCurrentFreqsLoudness;
 
     int EncodeDataToAudioBuffer(const char *stringToEncode, int type, int size, const char *melodyString, int melodySize);
-    int GetEncodedAudioBuffer(float *audioBuffer);
-    int ResetEncodedAudioBuffer();
   };
 }
 

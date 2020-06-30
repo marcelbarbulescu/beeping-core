@@ -23,7 +23,7 @@
 
 using namespace BEEPING;
 
-DecoderAudible::DecoderAudible(float samplingRate, int buffSize, int windowSize) : Decoder(samplingRate, buffSize, windowSize, Globals::numTokensAudible, Globals::numTokensAudible)
+DecoderAudible::DecoderAudible(float samplingRate, int windowSize) : Decoder(samplingRate, windowSize, Globals::numTokensAudible, Globals::numTokensAudible)
 {
 #ifdef _IOS_LOG_
   ios_log("C++ DecoderAudible");
@@ -73,14 +73,10 @@ int DecoderAudible::DecodeAudioBuffer(float *audioBuffer, int size)
   }
   mWritePosInFrameCircularBuffer = (size+mWritePosInFrameCircularBuffer)%(mSizeFrameCircularBuffer);
   
-  //if enough data filled (mBufferSize), then send to decode library
-  
   while (getSizeFilledFrameCircularBuffer() >= sizeWindow)
   {  	//copy from circularBufferFloat to sendBuffer
   	for (i=0;i<sizeWindow;i++)
   		mAnalBufferFloat[i] = mCircularBufferFloat[(i+mReadPosInFrameCircularBuffer)%(mSizeFrameCircularBuffer)];
-    //advance readpos (advance hopsize instead of full buffersize)
-  	//mReadPosInFrameCircularBuffer = (mReadPosInFrameCircularBuffer+mBufferSize)%(mSizeFrameCircularBuffer);
     mReadPosInFrameCircularBuffer = (mReadPosInFrameCircularBuffer+mSpectralAnalysis->mHopSize)%(mSizeFrameCircularBuffer);
 
     if (mDecoding == 0)

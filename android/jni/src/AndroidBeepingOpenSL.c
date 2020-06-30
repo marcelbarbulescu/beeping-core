@@ -112,7 +112,7 @@ void start_audio()
 
     if (g_playEncode == 1)
     {
-      int sizeSamplesRead = BEEPING_GetEncodedAudioBuffer(audioBuffer, g_BeepingCore);
+      int sizeSamplesRead = BEEPING_GetEncodedAudioBuffer(audioBuffer, VECSAMPS_MONO, g_BeepingCore);
       //__android_log_print(ANDROID_LOG_INFO, "BeepingCoreLibInfo", "SizeSamplesRead: %d", sizeSamplesRead);
       if (sizeSamplesRead > 0)
       {       

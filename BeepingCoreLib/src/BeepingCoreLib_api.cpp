@@ -39,7 +39,7 @@ class CBeepingCore
     CBeepingCore()
     {
       //will be created on configure()
-      //mEncoder = new Encoder(44100,2048); //configure with default params sr, buffsize
+      //mEncoder = new Encoder(44100); //configure with default param sr
       //mDecoder = new Decoder(44100,2048);
     }
 
@@ -57,7 +57,6 @@ class CBeepingCore
     Decoder *mDecoder;
     
     float mSampleRate; //needed?
-    int mBufferSize; //needed?
     int mWindowSize;
     
   private:
@@ -108,12 +107,11 @@ int BEEPING_GetVersionInfo(char * versioninfo)
 #ifdef __cplusplus
 extern "C"
 #endif //__cplusplus
-int32_t BEEPING_Configure(int mode, float samplingRate, int32_t bufferSize, void *beepingObject)
+int32_t BEEPING_Configure(int mode, float samplingRate, void *beepingObject)
 {
 	CBeepingCore *beeping = (CBeepingCore*)beepingObject;
 
 	beeping->mSampleRate = samplingRate;
-	beeping->mBufferSize = bufferSize;
   
   if (beeping->mSampleRate == 48000.0)
     beeping->mWindowSize = 2048;
@@ -140,38 +138,38 @@ int32_t BEEPING_Configure(int mode, float samplingRate, int32_t bufferSize, void
 
   if (mode == /*BEEPING_MODE::*/BEEPING_MODE_AUDIBLEOLD) //Audible
   {
-    beeping->mEncoder = new EncoderAudible(samplingRate, bufferSize, beeping->mWindowSize); //configure with default params sr, buffsize
-    beeping->mDecoder = new DecoderAudible(samplingRate, bufferSize, beeping->mWindowSize);
+    beeping->mEncoder = new EncoderAudible(samplingRate, beeping->mWindowSize); //configure with default param sr
+    beeping->mDecoder = new DecoderAudible(samplingRate, beeping->mWindowSize);
   }
   else if (mode == /*BEEPING_MODE::*/BEEPING_MODE_NONAUDIBLEOLD) //Non audible
   { 
-    beeping->mEncoder = new EncoderNonAudible(samplingRate, bufferSize, beeping->mWindowSize); //configure with default params sr, buffsize
-    beeping->mDecoder = new DecoderNonAudible(samplingRate, bufferSize, beeping->mWindowSize);
+    beeping->mEncoder = new EncoderNonAudible(samplingRate, beeping->mWindowSize); //configure with default param sr
+    beeping->mDecoder = new DecoderNonAudible(samplingRate, beeping->mWindowSize);
   }
   else if (mode == /*BEEPING_MODE::*/BEEPING_MODE_AUDIBLE) //Audible Multi-Tone
   {
-    beeping->mEncoder = new EncoderAudibleMultiTone(samplingRate, bufferSize, beeping->mWindowSize); //configure with default params sr, buffsize
-    beeping->mDecoder = new DecoderAudibleMultiTone(samplingRate, bufferSize, beeping->mWindowSize);
+    beeping->mEncoder = new EncoderAudibleMultiTone(samplingRate, beeping->mWindowSize); //configure with default param sr
+    beeping->mDecoder = new DecoderAudibleMultiTone(samplingRate, beeping->mWindowSize);
   }
   else if (mode == /*BEEPING_MODE::*/BEEPING_MODE_NONAUDIBLE) //NonAudible Multi-Tone
   {
-    beeping->mEncoder = new EncoderNonAudibleMultiTone(samplingRate, bufferSize, beeping->mWindowSize); //configure with default params sr, buffsize
-    beeping->mDecoder = new DecoderNonAudibleMultiTone(samplingRate, bufferSize, beeping->mWindowSize);
+    beeping->mEncoder = new EncoderNonAudibleMultiTone(samplingRate, beeping->mWindowSize); //configure with default param sr
+    beeping->mDecoder = new DecoderNonAudibleMultiTone(samplingRate, beeping->mWindowSize);
   }
   else if (mode == /*BEEPING_MODE::*/BEEPING_MODE_HIDDEN) //Hidden Multi-Tone
   {
-    beeping->mEncoder = new EncoderHiddenMultiTone(samplingRate, bufferSize, beeping->mWindowSize); //configure with default params sr, buffsize
-    beeping->mDecoder = new DecoderHiddenMultiTone(samplingRate, bufferSize, beeping->mWindowSize);
+    beeping->mEncoder = new EncoderHiddenMultiTone(samplingRate, beeping->mWindowSize); //configure with default param sr
+    beeping->mDecoder = new DecoderHiddenMultiTone(samplingRate, beeping->mWindowSize);
   }
   else if (mode == /*BEEPING_MODE::*/BEEPING_MODE_ALL) //All modes decoded simultaneously
   {
-    beeping->mEncoder = new EncoderNonAudibleMultiTone(samplingRate, bufferSize, beeping->mWindowSize); //configure with default params sr, buffsize
-    beeping->mDecoder = new DecoderAllMultiTone(samplingRate, bufferSize, beeping->mWindowSize);
+    beeping->mEncoder = new EncoderNonAudibleMultiTone(samplingRate, beeping->mWindowSize); //configure with default param sr
+    beeping->mDecoder = new DecoderAllMultiTone(samplingRate, beeping->mWindowSize);
   }
   else if (mode == /*BEEPING_MODE::*/BEEPING_MODE_CUSTOM) //Custom mode
   {
-    beeping->mEncoder = new EncoderCustomMultiTone(samplingRate, bufferSize, beeping->mWindowSize); //configure with default params sr, buffsize
-    beeping->mDecoder = new DecoderCustomMultiTone(samplingRate, bufferSize, beeping->mWindowSize);
+    beeping->mEncoder = new EncoderCustomMultiTone(samplingRate, beeping->mWindowSize); //configure with default param sr
+    beeping->mDecoder = new DecoderCustomMultiTone(samplingRate, beeping->mWindowSize);
   }
   else
   {
@@ -210,11 +208,11 @@ int32_t BEEPING_EncodeDataToAudioBuffer(const char *stringToEncode, int32_t size
 #ifdef __cplusplus
 extern "C"
 #endif //__cplusplus
-int32_t BEEPING_GetEncodedAudioBuffer(float *audioBuffer, void *beepingObject)
+int32_t BEEPING_GetEncodedAudioBuffer(float *audioBuffer, int size, void *beepingObject)
 {
   CBeepingCore *beeping = (CBeepingCore*)beepingObject;
 
-  return beeping->mEncoder->GetEncodedAudioBuffer(audioBuffer);
+  return beeping->mEncoder->GetEncodedAudioBuffer(audioBuffer, size);
 }
 
 #ifdef __cplusplus
@@ -337,8 +335,8 @@ int32_t BEEPING_SetCustomBaseFreq(float baseFreq, int beepsSeparation, void *bee
     Globals::freqBaseForCustomMultiTone = baseFreq;
     Globals::beepsSeparationForCustomMultiTone = beepsSeparation;
     
-    beeping->mEncoder = new EncoderCustomMultiTone(beeping->mSampleRate, beeping->mBufferSize, beeping->mWindowSize); //configure with default params sr, buffsize
-    beeping->mDecoder = new DecoderCustomMultiTone(beeping->mSampleRate, beeping->mBufferSize, beeping->mWindowSize);
+    beeping->mEncoder = new EncoderCustomMultiTone(beeping->mSampleRate, beeping->mWindowSize); //configure with default param sr
+    beeping->mDecoder = new DecoderCustomMultiTone(beeping->mSampleRate, beeping->mWindowSize);
   }
   else
   {

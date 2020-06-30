@@ -16,7 +16,7 @@ namespace BEEPING
   class DecoderAllMultiTone: public Decoder
   {
   public:
-    DecoderAllMultiTone(float sr, int buffsize, int windowSize);
+    DecoderAllMultiTone(float sr, int windowSize);
     ~DecoderAllMultiTone(void);
 
     int *mIdxs;

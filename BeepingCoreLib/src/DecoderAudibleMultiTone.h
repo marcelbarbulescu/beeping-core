@@ -16,7 +16,7 @@ namespace BEEPING
   class DecoderAudibleMultiTone: public Decoder
   {
   public:
-    DecoderAudibleMultiTone(float sr, int buffsize, int windowSize);
+    DecoderAudibleMultiTone(float sr, int windowSize);
     ~DecoderAudibleMultiTone(void);
 
     int *mIdxs;

@@ -17,7 +17,7 @@
 
 using namespace BEEPING;
 
-Encoder::Encoder(float samplingRate, int buffsize, int windowSize, int numTokens, int numTones)
+Encoder::Encoder(float samplingRate, int windowSize, int numTokens, int numTones)
 {
   mnAudioSignatureSamples = 0;
   mAudioSignature = NULL;
@@ -32,9 +32,8 @@ Encoder::Encoder(float samplingRate, int buffsize, int windowSize, int numTokens
 
 //__android_log_print(ANDROID_LOG_INFO, "BeepingCoreLibInfo", "Encoder init" );
   
-  //mSampleRate and mBufferSize will be configured again later
+  //mSampleRate will be configured again later
   mSampleRate = samplingRate;
-  mBufferSize = buffsize;
   mWindowSize = windowSize;
 
   Globals::init(windowSize, mSampleRate);
@@ -246,10 +245,10 @@ int Encoder::EncodeDataToAudioBuffer(const char *stringToEncode, int type, int s
 }*/
 
 
-int Encoder::GetEncodedAudioBuffer(float *audioBuffer)
+int Encoder::GetEncodedAudioBuffer(float *audioBuffer, int size)
 {
   int samplesRead = 0;
-  for (int i=0;i<mBufferSize;i++)
+  for (int i=0;i<size;i++)
   {
     if (mReadIndexEncodedAudioBuffer >= mNumSamplesEncodedString)
       break;

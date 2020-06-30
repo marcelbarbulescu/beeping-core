@@ -16,7 +16,7 @@ namespace BEEPING
   class DecoderNonAudible: public Decoder
   {
   public:
-    DecoderNonAudible(float sr, int buffsize, int windowSize);
+    DecoderNonAudible(float sr, int windowSize);
     ~DecoderNonAudible(void);
 
     int mSizeNighbBins;
