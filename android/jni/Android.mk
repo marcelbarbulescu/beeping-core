@@ -22,14 +22,11 @@ LOCAL_C_INCLUDES += ../../BeepingCoreLib \
                     ../../BeepingCoreLib/BeepingCoreLib/src/fftooura
 					
 LOCAL_LDLIBS := -L$(SYSROOT)/usr/lib  
-# for native audio
-LOCAL_LDLIBS += -lOpenSLES
 # for logging
 LOCAL_LDLIBS += -ldl -llog
 
 LOCAL_STATIC_LIBRARIES := 
-LOCAL_SRC_FILES := src/AndroidBeepingOpenSL.c \
-          src/opensl_io.c \
+LOCAL_SRC_FILES := \
           src/BeepingCore.cpp \
           ../../BeepingCoreLib/src/BeepingCoreLib_api.cpp \
           ../../BeepingCoreLib/src/Encoder.cpp \
